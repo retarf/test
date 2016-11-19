@@ -20,22 +20,13 @@ private:
 public:
     QSqlDatabase db;
 
-    // db_get_list()
     QString **list = new QString *[3];
     int *listSize = new int;
-
-    // db_add()
-    // QString *record = new QString [3];
 
     Connection();
 
     void db_get_list();                 //get list from database
-
     void db_add(QString *record);                      //add to database from WindowDodaj object
-
-    // void db_get();              //get from database
-    // void db_del();              //delete from database
-    // void db_rep();              //replace record in database
 };
 
 #endif // CONNECTION_H

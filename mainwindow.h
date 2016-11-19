@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <iostream>
 
 #include "connection.h"
 
@@ -19,29 +20,25 @@ class MainWindow :public QMainWindow
 
 public:
 
-    explicit MainWindow(QWidget* parent =0);
+    explicit MainWindow();
 
 
-private slots:
-    void get_values(QLineEdit* imie, QLineEdit* nazwisko, QLineEdit* numer, Connection* connection);
+public slots:
+    void get_values();
+    void clear_form();
 
 public:
-    QWidget *window;
-    QVBoxLayout *layout;
+    QWidget* window;
 
     QLineEdit *imie;
     QLineEdit *nazwisko;
     QLineEdit *numer;
 
-    QLabel *imieLab;
-    QLabel *nazwiskoLab;
-    QLabel *numerLab;
 
     QPushButton *dodaj;
     QPushButton *wyczysc;
 
-private:
-    Connection* conn = new Connection;
+    Connection* conn;
 
     QMenu* menu;
 

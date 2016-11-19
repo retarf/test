@@ -1,6 +1,7 @@
 #include <QtSql>
 #include <QSqlQuery>
 #include <QSqlDatabase>
+#include <iostream>
 
 #include "connection.h"
 
@@ -38,8 +39,9 @@ void Connection::db_add(QString *record)
 {
     db.open();
 
-    QSqlQuery query;
-    query.prepare("INSERT INTO (imie, nazwisko, numer) VALUES (:imie, :nazwisko, :numer)");
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO dane (imie, nazwisko, numer)"
+                  "VALUES (:imie, :nazwisko, :numer)");
 
     query.bindValue(":imie", record[0]);
     query.bindValue(":nazwisko", record[1]);
@@ -48,4 +50,8 @@ void Connection::db_add(QString *record)
     query.exec();
 
     db.close();
+
+    std::cout << "1: " << record[0].toStdString() << std::endl;
+    std::cout << "2: " << record[1].toStdString() << std::endl;
+    std::cout << "3: " << record[2].toStdString() << std::endl;
 }

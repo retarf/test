@@ -2,40 +2,27 @@
 #include <QPushButton>
 #include <QGroupBox>
 
-
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
+
+MainWindow::MainWindow()
 {
 
     window = new QWidget;
-    menu = new QMenu;
-    layout = new QVBoxLayout;
+    QVBoxLayout *layout = new QVBoxLayout;
+
+    QLabel* imieLab = new QLabel("Imię:");
+    QLabel* nazwiskoLab = new QLabel("Nazwisko:");
+    QLabel* numerLab = new QLabel("Nr telefonu:");
+
+    conn = new Connection;
+
+    dodaj = new QPushButton("Dodaj", this);
+    wyczysc = new QPushButton("Wyczyść", this);
 
     imie = new QLineEdit();
     nazwisko = new QLineEdit();
     numer = new QLineEdit();
-
-    imieLab = new QLabel("Imię:");
-    nazwiskoLab = new QLabel("Nazwisko:");
-    numerLab = new QLabel("Nr telefonu:");
-
-
-    QGroupBox* hGroupBox = new QGroupBox;
-
-    QHBoxLayout *buttons = new QHBoxLayout;
-
-    std::cout << "GOTOWE 1" << std::endl; /// TUTAJ <--------------------------------------------------------------------------
-
-    dodaj = new QPushButton("Dodaj");
-    wyczysc = new QPushButton("Wyczyść");
-
-    std::cout << "GOTOWE XX" << std::endl; /// TUTAJ <--------------------------------------------------------------------------
-
-    buttons->addWidget(dodaj);
-    buttons->addWidget(wyczysc);
-
-    hGroupBox->setLayout(buttons);
 
     layout->addWidget(imieLab);
     layout->addWidget(imie);
@@ -43,30 +30,36 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(nazwisko);
     layout->addWidget(numerLab);
     layout->addWidget(numer);
-
-    std::cout << "GOTOWE 4" << std::endl; /// TUTAJ <--------------------------------------------------------------------------
-
-    layout->addWidget(hGroupBox);
-
-    std::cout << "GOTOWE 5" << std::endl; /// TUTAJ <--------------------------------------------------------------------------
+    layout->addWidget(dodaj);
+    layout->addWidget(wyczysc);
 
     window->setLayout(layout);
 
-    connect(dodaj, SIGNAL(clicked()), this, SLOT(get_values(imie, nazwisko, numer, conn)));
+    QObject::connect(dodaj, SIGNAL(clicked()), this, SLOT( get_values() ) );
+    QObject::connect(wyczysc, SIGNAL(clicked()), this, SLOT( clear_form() ) );
 
-    std::cout << "GOTOWE 6" << std::endl; /// TUTAJ <--------------------------------------------------------------------------
+    window->setAttribute(Qt::WA_DeleteOnClose);
 
     window->show();
 
 }
 
-void MainWindow::get_values(QLineEdit* imie, QLineEdit* nazwisko, QLineEdit* numer, Connection* connection)
+void MainWindow::get_values()
 {
     QString *record = new QString [3];
 
-    record[0] = imie->text();
-    record[1] = nazwisko->text();
-    record[2] = numer->text();
+    record[0] = this->imie->text();
+    record[1] = this->nazwisko->text();
+    record[2] = this->numer->text();
 
-    connection->db_add(record);
+    conn->db_add(record);
+
+    window->close();
+}
+
+void MainWindow::clear_form()
+{
+    this->imie->setText("");
+    this->nazwisko->setText("");
+    this->numer->setText("");
 }
